@@ -10,37 +10,11 @@ import os
 ##### This section is for the CoC #####
 #######################################
 
-def makeCoC(parts, batch, date, part_ppty, ppty, unit, po_num):
+def makeCoC(parts, batch, date, part_ppty, ppty, unit, po_num, template, dest):
     # Makes a dataframe where a code is matched to each of its S/N's
     unique_parts = parts.groupby('Code')['S/N'].apply(list).reset_index(name = 'S/N')
 
     numcodes = unique_parts.shape[0]
-
-    desc = ""
-
-    # for i in range(numcodes):
-    #     code_desc = ""
-    #     code = unique_parts.loc[i].at['Code']
-    #     sns = unique_parts.loc[i].at['S/N']
-    #     start = -1000
-    #     last = -1000
-    #     counter = 0
-    #     for sn in sorted(sns):
-    #         if sn == last+1:
-    #             if(counter == len(sns)-1):
-    #                 code_desc += (' to ' + str(code) + '-' + str(last))
-    #             pass
-    #         else:
-    #             if(start != last):      # Last code was consecutive
-    #                 code_desc += (' to ' + str(code) + '-' + str(last))
-    #                 code_desc += (', ' + str(code) + '-' + str(sn))
-    #             else:
-    #                 code_desc += (', ' + str(code) + '-' + str(sn))
-    #             start = sn
-    #         last = sn
-    #         counter += 1
-    #     desc += code_desc
-    # desc = desc[2:]
 
     for i in range(numcodes):
         # Generate description with only one code
@@ -109,12 +83,11 @@ def makeCoC(parts, batch, date, part_ppty, ppty, unit, po_num):
             count += 1
 
         context['QAqnty'] = count
-        
 
-        CoC = DocxTemplate("C:\\Justin\\TreadStone\\Project\\testing\\Templates\\CoC Template New.docx")
+        CoC = DocxTemplate(template)
         CoC.render(context)
 
-        savepath = 'testing\\' + context['Batch']
+        savepath = dest + '\\' +  context['Batch']
         filepath = savepath + '\\CoC' + '_'+str(batch) +'_'+ str(code) +'.docx'
 
         if not os.path.exists(savepath):

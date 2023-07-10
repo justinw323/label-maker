@@ -12,7 +12,8 @@ from xlutils.copy import copy
 import os
 import shutil
 
-def makePList(parts, part_ppty, summary, property, batch, po_num, sheet, thedate, numboxes):
+def makePList(sheet, parts, part_ppty, summary, property, batch, po_num, 
+              thedate, numboxes, template, dest):
     context = dict()
     # Makes a dataframe where a code is matched to each of its S/N's
     unique_parts = parts.groupby('Code')['S/N'].apply(list).reset_index(name = 'S/N')
@@ -101,8 +102,6 @@ def makePList(parts, part_ppty, summary, property, batch, po_num, sheet, thedate
             specs['PN'] = '1142-042-2'
         elif code == 'M43':
             specs['PN'] = '1142-043-2'
-        # print(specs)
-        # print("----------------------------------------------")
 
         part_specs[code] = specs
 
@@ -118,56 +117,59 @@ def makePList(parts, part_ppty, summary, property, batch, po_num, sheet, thedate
     updates = pd.concat(updates)
     updates.index = [x for x in range(updates.shape[0])]
 
-    pList = DocxTemplate("C:\\Justin\\TreadStone\\Project\\testing\\Templates\\Packing List Template New.docx")
+    pList = DocxTemplate(template)
     pList.render(context)
 
-    savepath = 'testing\\' + context['Batch']
+    savepath = dest + '\\' +  context['Batch']
     filepath = savepath + '\\Packing List' + '_'+str(batch) + '.docx'
 
     if not os.path.exists(savepath):
         os.mkdir(savepath)
 
     if os.path.isfile(filepath):
-        # filename, extension = os.path.splitext(filepath)
-        # counter = 1
-        # while os.path.isfile(filepath):
-        #     filepath = filename + " (" + str(counter) + ")" + extension
-        #     counter += 1
+        filename, extension = os.path.splitext(filepath)
+        counter = 1
+        while os.path.isfile(filepath):
+            filepath = filename + " (" + str(counter) + ")" + extension
+            counter += 1
         pList.save(filepath)
     else:
         pList.save(filepath)
 
     app = xw.App(visible=False)
+    new_loc = os.path.split(sheet)[0]
+    print(new_loc)
 
-    # Copy sheet into batch folder with filled in columns
-    # batchsheet = "C:\\Justin\\TreadStone\\Project\\testing\\" + str(batch) + '\\' + str(batch) + '.xlsx'
-    # shutil.copy(sheet, batchsheet)
+    # Copy template sheet into batch folder
+    batchsheet = savepath + '\\' + str(batch) + '.xlsx'
+    shutil.copy(sheet, batchsheet)
 
-    # bb = xw.Book(batchsheet)
-    # bs = bb.sheets['Summary']
+    bb = xw.Book(batchsheet)
+    bs = bb.sheets['Summary']
 
-    # bs.range('F4').options(index=False, header=False).value = updates
-    # bb.save()
-    # bb.close()
+    # # Fill in the summary columns
+    bs.range('F4').options(index=False, header=False).value = updates
+    bb.save()
+    bb.close()
 
     # # Clear existing sheet for new template
-    # wb = xw.Book(sheet)
+    wb = xw.Book(sheet)
 
     # # Clear batch and date
-    # wb.sheets['Part #'].range('B2').clear_contents()
-    # wb.sheets['Part #'].range('B3').clear_contents()
-    # wb.sheets['Part #'][7:,:].clear_contents()
+    wb.sheets['Part #'].range('B2').clear_contents()
+    wb.sheets['Part #'].range('B3').clear_contents()
+    wb.sheets['Part #'][7:,:].clear_contents()
 
-    # wb.sheets['Property'][5:,:].clear_contents()
+    wb.sheets['Property'][5:,:].clear_contents()
 
-    # wb.sheets['Summary'][3:,1:].clear_contents()
+    wb.sheets['Summary'][3:,1:].clear_contents()
 
-    # wb.sheets['Summary'].range('E4').options(index=False, header=False).value = totals
+    wb.sheets['Summary'].range('E4').options(index=False, header=False).value = totals
 
-    # wb.save()
-    # wb.close()
+    wb.save()
+    wb.close()
 
-    # app.quit()
+    app.quit()
 
     
 

@@ -13,7 +13,7 @@ import os
 #######################################################
 ##### This section pertains to the label template #####
 #######################################################
-def makeLabels(parts, po_num, batch, thedate, num):
+def makeLabels(parts, po_num, batch, thedate, num, dest):
     parts.columns = ['Code', 'S/N']
     context = dict()
     context['Batch'] = batch
@@ -108,8 +108,12 @@ def makeLabels(parts, po_num, batch, thedate, num):
             i += 1
 
 
-    savepath = 'testing\\' + context['Batch'] + '\\Labels'
+    batchpath = dest + '\\' +  context['Batch']
+    savepath = dest + '\\' +  context['Batch'] + '\\Labels'
     filepath = savepath + '\\' + context['Batch'] +'_Pack' + str(num) + '_labels.docx'
+
+    if not os.path.exists(batchpath):
+        os.mkdir(batchpath)
 
     if not os.path.exists(savepath):
         os.mkdir(savepath)
