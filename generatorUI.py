@@ -63,9 +63,9 @@ class Page(tk.Frame):
         self.label = ttk.Label(self, text = "")
         self.label.grid(row = 5, column = 0, padx = 10, pady = 10, columnspan=3)
 
-        preset = ttk.Button(self, text = "preset", command = 
-                           self.app.preset)
-        preset.grid(row = 6, column = 0, padx = 10, pady = 10, columnspan=3)
+        # preset = ttk.Button(self, text = "preset", command = 
+        #                    self.app.preset)
+        # preset.grid(row = 6, column = 0, padx = 10, pady = 10, columnspan=3)
     
     def getFile(self, doc, filetype):
         file_prompt = ''
