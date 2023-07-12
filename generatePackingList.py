@@ -6,14 +6,10 @@ from docx.oxml.shared import OxmlElement
 from docx.oxml.ns import qn
 import pandas as pd
 import numpy as np
-import xlwings as xw
-from xlrd import open_workbook
-from xlutils.copy import copy
 import os
-import shutil
 
-def makePList(sheet, parts, part_ppty, summary, property, batch, po_num, 
-              thedate, numboxes, template, dest):
+def makePList(parts, part_ppty, summary, property, batch, po_num, 
+              thedate, numboxes, template, dest, label):
     context = dict()
     # Makes a dataframe where a code is matched to each of its S/N's
     unique_parts = parts.groupby('Code')['S/N'].apply(list).reset_index(name = 'S/N')
@@ -75,12 +71,19 @@ def makePList(sheet, parts, part_ppty, summary, property, batch, po_num,
         # List of s/n's
         sns = unique_parts.loc[i].at['S/N']
         specs['this'] = len(sns)
+        # print(summary)
         code_summ = summary.loc[summary['Code'] == code]
-        # print(code_summ)
-        specs['quantity'] = int(code_summ.iloc[0].at['Quantity Ordered'])
+        try:
+            specs['quantity'] = int(code_summ.iloc[0].at['Quantity Ordered'])
+        except IndexError:
+            # Part in sheet 1 isn't present in sheet 3 
+            label['text'] = '"Summary" sheet is missing parts'
         specs['prev'] = int(code_summ.iloc[0].at['Previous Shipment'])
         specs['total'] = specs['this'] + specs['prev']
         specs['rem'] = specs['quantity'] - specs['total']
+        # Check that numbers are valid (total amount shipped isn' too high)
+        if(specs['prev'] + specs['this'] > specs['quantity']):
+            label['text'] = 'Invalid numbers in "Summary" sheet'
         specs['code'] = code
         if code == 'M38':
             specs['PN'] = '1110-038-2'
@@ -102,6 +105,9 @@ def makePList(sheet, parts, part_ppty, summary, property, batch, po_num,
             specs['PN'] = '1142-042-2'
         elif code == 'M43':
             specs['PN'] = '1142-043-2'
+        else:
+            # Something in sheet 3 isn't actually a code
+            label['text'] = 'Invalid code in "Summary" sheet'
 
         part_specs[code] = specs
 
@@ -132,44 +138,9 @@ def makePList(sheet, parts, part_ppty, summary, property, batch, po_num,
         while os.path.isfile(filepath):
             filepath = filename + " (" + str(counter) + ")" + extension
             counter += 1
-        pList.save(filepath)
+        return (filepath, pList, updates, totals)
     else:
-        pList.save(filepath)
-
-    app = xw.App(visible=False)
-    new_loc = os.path.split(sheet)[0]
-    print(new_loc)
-
-    # Copy template sheet into batch folder
-    batchsheet = savepath + '\\' + str(batch) + '.xlsx'
-    shutil.copy(sheet, batchsheet)
-
-    bb = xw.Book(batchsheet)
-    bs = bb.sheets['Summary']
-
-    # # Fill in the summary columns
-    bs.range('F4').options(index=False, header=False).value = updates
-    bb.save()
-    bb.close()
-
-    # # Clear existing sheet for new template
-    wb = xw.Book(sheet)
-
-    # # Clear batch and date
-    wb.sheets['Part #'].range('B2').clear_contents()
-    wb.sheets['Part #'].range('B3').clear_contents()
-    wb.sheets['Part #'][7:,:].clear_contents()
-
-    wb.sheets['Property'][5:,:].clear_contents()
-
-    wb.sheets['Summary'][3:,1:].clear_contents()
-
-    wb.sheets['Summary'].range('E4').options(index=False, header=False).value = totals
-
-    wb.save()
-    wb.close()
-
-    app.quit()
+        return (filepath, pList, updates, totals)
 
     
 

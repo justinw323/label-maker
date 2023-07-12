@@ -16,6 +16,8 @@ def makeCoC(parts, batch, date, part_ppty, ppty, unit, po_num, template, dest):
 
     numcodes = unique_parts.shape[0]
 
+    docs = []
+
     for i in range(numcodes):
         # Generate description with only one code
         code_desc = ""
@@ -99,6 +101,7 @@ def makeCoC(parts, batch, date, part_ppty, ppty, unit, po_num, template, dest):
             while os.path.isfile(filepath):
                 filepath = filename + " (" + str(counter) + ")" + extension
                 counter += 1
-            CoC.save(filepath)
+            docs.append((filepath, CoC))
         else:
-            CoC.save(filepath)
+            docs.append((filepath, CoC))
+    return docs

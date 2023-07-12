@@ -1,6 +1,10 @@
 # -*- mode: python ; coding: utf-8 -*-
 
 import sys ; sys.setrecursionlimit(sys.getrecursionlimit() * 5)
+from PyInstaller.utils.hooks import collect_submodules
+
+hiddenimports_openpyxl = collect_submodules('openpyxl')
+all_hidden_imports = hiddenimports_openpyxl
 
 block_cipher = None
 
@@ -10,7 +14,7 @@ a = Analysis(
     pathex=[],
     binaries=[],
     datas=[],
-    hiddenimports=['openpyxl'],
+    hiddenimports=all_hidden_imports,
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],

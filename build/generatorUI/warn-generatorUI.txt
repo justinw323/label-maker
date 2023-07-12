@@ -104,7 +104,7 @@ missing module named 'setuptools.extern.packaging.tags' - imported by setuptools
 missing module named trove_classifiers - imported by setuptools.config._validate_pyproject.formats (optional)
 missing module named 'setuptools.extern.packaging.specifiers' - imported by setuptools.config.setupcfg (top-level), setuptools.config._apply_pyprojecttoml (delayed)
 missing module named 'setuptools.extern.packaging.requirements' - imported by setuptools.config.setupcfg (top-level)
-missing module named pyimod02_importers - imported by C:\Users\justi\anaconda3\envs\venv\Lib\site-packages\PyInstaller\hooks\rthooks\pyi_rth_pkgres.py (delayed), C:\Users\justi\anaconda3\envs\venv\Lib\site-packages\PyInstaller\hooks\rthooks\pyi_rth_pkgutil.py (delayed)
+missing module named pyimod02_importers - imported by C:\Users\justi\anaconda3\envs\venv\Lib\site-packages\PyInstaller\hooks\rthooks\pyi_rth_pkgutil.py (delayed), C:\Users\justi\anaconda3\envs\venv\Lib\site-packages\PyInstaller\hooks\rthooks\pyi_rth_pkgres.py (delayed)
 missing module named htmlentitydefs - imported by lxml.html.soupparser (optional)
 missing module named BeautifulSoup - imported by lxml.html.soupparser (optional)
 missing module named unicodedata2 - imported by charset_normalizer.utils (optional)

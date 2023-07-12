@@ -135,9 +135,10 @@ class Application(tk.Tk):
         # print(self.book, self.plist_template, self.coc_template, 
         #              self.dest)
         loc = generateDocs(self.book, self.plist_template, self.coc_template, 
-                     self.dest)
-        self.frames[Page].label['text'] = ('Documents saved to\n' + 
-                                    self.dest + '\\' + loc)
+                     self.dest, self.frames[Page].label)
+        if(loc == 404):
+            return
+        self.frames[Page].label['text'] = ('Documents saved to\n' + loc)
 
 app = Application()
 

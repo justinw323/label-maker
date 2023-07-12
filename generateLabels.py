@@ -74,7 +74,7 @@ def makeLabels(parts, po_num, batch, thedate, num, dest):
 
     i = 0
     # Make each row of the label sheet
-    for r in range(parts.shape[0]//3 + 1):
+    for r in range(len(table.rows)):
         row = table.rows[r].cells
         for c in range(3):
             if(i >= numParts):
@@ -103,7 +103,8 @@ def makeLabels(parts, po_num, batch, thedate, num, dest):
                 pn = '1142-043-2'
             row[c].text = ('Batch #: ' + str(context['Batch']) + '\n' + 
                         'P/N: ' + pn + '\n' + 
-                        'Serial #: ' + code + '-' + f"{int(parts.loc[i].at['S/N']):03}" + '\n' + 
+                        'Serial #: ' + code + '-' + 
+                                f"{int(parts.loc[i].at['S/N']):04}" + '\n' + 
                         'Parts #: ' + str(i+1) + '\n')
             i += 1
 
@@ -124,6 +125,6 @@ def makeLabels(parts, po_num, batch, thedate, num, dest):
         while os.path.isfile(filepath):
             filepath = filename + " (" + str(counter) + ")" + extension
             counter += 1
-        doc.save(filepath)
+        return (filepath, doc)
     else:
-        doc.save(filepath)
+        return (filepath, doc)
