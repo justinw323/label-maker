@@ -10,12 +10,12 @@ Install anaconda and set up a vitual environment following these instructions: h
 From a terminal:
 1. Navigate to the folder containing the .spec file (label_maker.spec or label_maker_fast.spec)
 2. Install the pyinstaller package with:
-   1. 'pip install pyinstaller'
-   2. 'pip3 install pyinstaller'
-   3. 'conda install pyinstaller' if using the Anaconda prompt
+   1. `pip install pyinstaller`
+   2. `pip3 install pyinstaller`
+   3. `conda install pyinstaller` if using the Anaconda prompt
 4. Run:
-   1. 'pyinstaller label_maker.spec' for the slower app
-   2. 'pyinstaller label_maker_fast.spec' for the faster app
+   1. `pyinstaller label_maker.spec` for the slower app
+   2. `pyinstaller label_maker_fast.spec` for the faster app
 
 # Usage
 1. Fill in an input sheet, refer to the example sheet if necessary
