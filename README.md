@@ -16,6 +16,7 @@ From a terminal:
 4. Run:
    1. `pyinstaller label_maker.spec` for the slower app
    2. `pyinstaller label_maker_fast.spec` for the faster app
+        1. This creates a folder called "label_maker_fast" containing the file label_maker_fast.exe file, as well as other files. The .exe file must be kept in that folder for the program to work, and the other files must not be deleted
 
 # Usage
 1. Fill in an input sheet, refer to the example sheet if necessary
