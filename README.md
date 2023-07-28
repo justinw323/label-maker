@@ -24,6 +24,6 @@ From a terminal:
 2. Make sure that you have the templates downloaded (CoC Template New.docx and Packing List Template New.docx)
 3. Run the .exe file
 4. When it opens, choose your template files, your input spreadsheet, and the folder where you want the documents to be saved, and click "Generate Documents"
-   1. Close the input spreadsheet when you generate the documents to create the spreadsheet for the next batch of the order
+   1. Close the input spreadsheet when you generate the documents to create the spreadsheet for the next batch of the order (the program cannot edit documents that are open somewhere else on the computer, so this only works if you close the input sheet. If you don't, you can copy the information from the newly generated sheet to make the new input sheet.
 6. If there are any issues, the program will let you know
 7. If successful, a folder for the batch will be created containing all of the documents
