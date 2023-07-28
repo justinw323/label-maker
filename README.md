@@ -14,9 +14,10 @@ From a terminal:
    2. `pip3 install pyinstaller`
    3. `conda install pyinstaller` if using the Anaconda prompt
 4. Run:
-   1. `pyinstaller label_maker.spec` for the slower app
-   2. `pyinstaller label_maker_fast.spec` for the faster app
-        1. This creates a folder called "label_maker_fast" containing the file label_maker_fast.exe file, as well as other files. The .exe file must be kept in that folder for the program to work, and the other files must not be deleted
+   1. `pyinstaller label_maker.spec` for the slower app. This creates two folders: build and dist. dist will contain a the file "label_maker.exe", which is the application.
+   2. `pyinstaller label_maker_fast.spec` for the faster app. This creates two folders: build and dist.
+        1. Tdist will contain another folder called "label_maker_fast" containing the "label_maker_fast.exe" file, as well as other files. The .exe file must be kept in that folder for the program to work, and the other files must not be deleted
+
 
 # Usage
 1. Fill in an input sheet, refer to the example sheet if necessary
